@@ -5,14 +5,15 @@ import pool from './pool'
  */
 const createUsersTable = () => {
   const queryText = 
-    `CREATE TABLE IF NOT EXISTS 
+    `
+    CREATE TABLE IF NOT EXISTS 
       users(
-        id UUID PRIMARY KEY NOT NULL,
+        id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
         email VARCHAR(30) UNIQUE NOT NULL,
         firstname VARCHAR (40) NOT NULL,
         lastname VARCHAR(40) NOT NULL,
         password VARCHAR(128) NOT NULL,
-        address VARCHAR(40) NOT NULL,
+        address VARCHAR(40),
         role INTEGER DEFAULT 0
     )`;
     return pool.connect().then(client => {
@@ -38,9 +39,10 @@ const createUsersTable = () => {
 
 const createCarsTable = () => {
   const queryText = 
-    `CREATE TABLE IF NOT EXISTS 
+    `
+    CREATE TABLE IF NOT EXISTS 
       cars(
-        id UUID PRIMARY KEY NOT NULL,
+        id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
         owner UUID,
         FOREIGN KEY (owner) REFERENCES users(id),
         created_on TIMESTAMP WITH TIME ZONE DEFAULT now(),
@@ -71,9 +73,10 @@ const createCarsTable = () => {
 
 const createOrdersTable = () => {
   const queryText = 
-  `CREATE TABLE IF NOT EXISTS 
+  `
+  CREATE TABLE IF NOT EXISTS 
       orders(
-        id UUID PRIMARY KEY NOT NULL,
+        id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
         buyer_id UUID,
         car_id UUID,
         amount VARCHAR(14) NOT NULL,
@@ -104,9 +107,10 @@ const createOrdersTable = () => {
 
 const createFlagsTable = () => {
   const queryText = 
-    `CREATE TABLE IF NOT EXISTS 
+    `
+    CREATE TABLE IF NOT EXISTS 
       flags(
-        id UUID PRIMARY KEY NOT NULL,
+        id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
         car_id UUID,
         FOREIGN KEY (car_id) REFERENCES cars(id),
         created_on TIMESTAMP WITH TIME ZONE DEFAULT now(),
